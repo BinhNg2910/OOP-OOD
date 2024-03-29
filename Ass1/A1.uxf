@@ -4,10 +4,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>328</x>
-      <y>216</y>
-      <w>168</w>
-      <h>336</h>
+      <x>344</x>
+      <y>128</y>
+      <w>288</w>
+      <h>320</h>
     </coordinates>
     <panel_attributes>Project
 --
@@ -22,8 +22,7 @@ organizations[]: Organization
 company: Company
 categoriesp[]: Category
 --
-__init__(title, location, status, 
-rating, score, date, tool)
+__init__(title, location, status, rating, score, date, tool)
 getTitle()
 getLocation()
 getStatus()
@@ -43,26 +42,20 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>864</x>
-      <y>536</y>
+      <x>896</x>
+      <y>448</y>
       <w>152</w>
-      <h>176</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Category
 --
 category_name
 acheivement
-project_title
-location
 --
-__init__(name, acheivement, 
-title, location)
+__init__(name, acheivement, title, location)
 getName()
 getAcheivement()
-getProjectTitle()
-getLocation()
 getAllAtrributes()
-
 
 bg=#dddddd
 </panel_attributes>
@@ -71,9 +64,9 @@ bg=#dddddd
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>488</x>
-      <y>232</y>
-      <w>376</w>
+      <x>624</x>
+      <y>144</y>
+      <w>296</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -81,29 +74,24 @@ m1=1..*
 r1=
 m2=*
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;450.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>848</x>
-      <y>176</y>
-      <w>144</w>
-      <h>176</h>
+      <x>904</x>
+      <y>88</y>
+      <w>208</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>Organizaiton
 --
 name
 role
-project_title
-location
 --
-__init__(self, name, role, 
-title, location)
+__init__(self, name, role, title, location)
 getName()
 getRole()
-getProjectTitle()
-getLocation()
 getAllAttributes()
 
 bg=#dddddd
@@ -113,10 +101,10 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>440</x>
-      <y>640</y>
-      <w>240</w>
-      <h>216</h>
+      <x>392</x>
+      <y>512</y>
+      <w>256</w>
+      <h>328</h>
     </coordinates>
     <panel_attributes>System
 --
@@ -152,21 +140,17 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>872</x>
-      <y>368</y>
+      <x>904</x>
+      <y>280</y>
       <w>152</w>
-      <h>136</h>
+      <h>72</h>
     </coordinates>
     <panel_attributes>Company
 --
 name
-project_title
-location
 --
 __init__(name, title, location)
 getName()
-getProjectTitle()
-getLocation()
 
 bg=#dddddd
 </panel_attributes>
@@ -175,24 +159,24 @@ bg=#dddddd
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>488</x>
-      <y>320</y>
-      <w>400</w>
-      <h>136</h>
+      <x>624</x>
+      <y>232</y>
+      <w>296</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
 r1=
 m2=
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;280.0;10.0;280.0;150.0;480.0;150.0</additional_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0;210.0;120.0;350.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>488</x>
-      <y>440</y>
-      <w>392</w>
+      <x>624</x>
+      <y>352</y>
+      <w>288</w>
       <h>168</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -200,6 +184,6 @@ m1=1..*
 r1=
 m2=*
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;180.0;10.0;180.0;180.0;470.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0;90.0;180.0;340.0;180.0</additional_attributes>
   </element>
 </diagram>
