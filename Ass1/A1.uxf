@@ -1,23 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>10</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>280</y>
-      <w>110</w>
-      <h>150</h>
+      <x>328</x>
+      <y>216</y>
+      <w>168</w>
+      <h>336</h>
     </coordinates>
     <panel_attributes>Project
 --
-name
-location
-status
-gs_rating
-final_score
-certified_date
-rating_tool
+title: string
+location: string
+status: string
+rating: string
+score: string
+date: string
+tool: string
+organizations[]: Organization
+company: Company
+categoriesp[]: Category
+--
+__init__(title, location, status, 
+rating, score, date, tool)
+getTitle()
+getLocation()
+getStatus()
+getRating()
+getScore()
+getDate()
+getTool()
+getAllAttributes()
+getOrganizations()
+getCompany()
+checkOrganization(name, role)
 
 bg=#dddddd
 </panel_attributes>
@@ -26,20 +43,26 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>710</x>
-      <y>280</y>
-      <w>110</w>
-      <h>150</h>
+      <x>864</x>
+      <y>536</y>
+      <w>152</w>
+      <h>176</h>
     </coordinates>
-    <panel_attributes>Project
+    <panel_attributes>Category
 --
-name
+category_name
+acheivement
+project_title
 location
-status
-gs_rating
-final_score
-certified_date
-rating_tool
+--
+__init__(name, acheivement, 
+title, location)
+getName()
+getAcheivement()
+getProjectTitle()
+getLocation()
+getAllAtrributes()
+
 
 bg=#dddddd
 </panel_attributes>
@@ -48,16 +71,135 @@ bg=#dddddd
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>340</y>
-      <w>180</w>
-      <h>50</h>
+      <x>488</x>
+      <y>232</y>
+      <w>376</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=*
+m1=1..*
 r1=
 m2=*
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;450.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>848</x>
+      <y>176</y>
+      <w>144</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>Organizaiton
+--
+name
+role
+project_title
+location
+--
+__init__(self, name, role, 
+title, location)
+getName()
+getRole()
+getProjectTitle()
+getLocation()
+getAllAttributes()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>640</y>
+      <w>240</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>System
+--
+projects[] = Project
+organizations[] = Organization
+companies[] = Company
+categories[] = Category
+--
+__init__()
+createProject(title, location, 
+status, rating, score, date, tool)
+addOrganization(name, role, title, location)
+addCompany(name, title, location)
+addCategory(name, acheivement, title, location)
+checkProjectTitle(title)
+searchByTitle(title)
+searchByLocation(location)
+searchByOrganization(name, role)
+searchByCompany(name)
+searchByCategory(category)
+displayAll()
+displayAllProjects()
+displayAllOrganizations()
+displayAllCompanies()
+displayAllCategories()
+printSearchResult(result)
+userInput()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>872</x>
+      <y>368</y>
+      <w>152</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>Company
+--
+name
+project_title
+location
+--
+__init__(name, title, location)
+getName()
+getProjectTitle()
+getLocation()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>320</y>
+      <w>400</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;280.0;10.0;280.0;150.0;480.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>440</y>
+      <w>392</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=*
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;10.0;180.0;180.0;470.0;180.0</additional_attributes>
   </element>
 </diagram>

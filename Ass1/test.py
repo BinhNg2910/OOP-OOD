@@ -9,17 +9,10 @@
 # # if __name__ == '__main__':
 # #     unittest.main()
 
-# result = {"projects" : [1, 2, 3], 
-#             "organizations" : [5], 
-#             "companies" : [11],
-#             "categories" : []}
-
-# result["projects"].append(4)
-# # print(result)
-
-# if result["categories"]:
-#     print("ok")
-# else:
-#     print("No")
-space = " "
-print(5*space + "*")
+result = {"projects" : [1, 2, 3], 
+            "organizations" : [5], 
+            "companies" : [11],
+            "categories" : []}
+test = [4,4,4]
+result["projects"] += test
+print(result)
