@@ -1,1 +1,1 @@
-displayAllCategories
+

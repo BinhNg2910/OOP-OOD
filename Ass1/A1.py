@@ -47,9 +47,9 @@ class Project:
             if organization.getName() == name and organization.getRole() == role:
                 return True
         return False
-    def checkCategory(self, name, acheivement):
+    def checkCategory(self, name, achievement):
         for category in self.categories:
-            if category.getName() == name and category.getAcheivement() == acheivement:
+            if category.getName() == name and category.getachievement() == achievement:
                 return True
         return False
 class Organization:
@@ -72,15 +72,15 @@ class Company:
         return self.name
 
 class Category:
-    def __init__(self, name, acheivement) -> None:
+    def __init__(self, name, achievement) -> None:
         self.category_name = name
-        self.acheivement = acheivement
+        self.achievement = achievement
     def getName(self):
         return self.category_name
-    def getAcheivement(self):
-        return self.acheivement
+    def getAchievement(self):
+        return self.achievement
     def getAllAtrributes(self):
-        attributes = [self.category_name, self.acheivement]
+        attributes = [self.category_name, self.achievement]
         attribute_str = " - ".join(attributes) if attributes else "NULL"
         return attribute_str
 
@@ -108,11 +108,11 @@ class SystemController:
         newCompany = Company(name)
         self.companies.append(newCompany)
         return newCompany
-    def addCategory(self, name, acheivement):
-        newCategory = self.checkCategory(name, acheivement)
+    def addCategory(self, name, achievement):
+        newCategory = self.checkCategory(name, achievement)
         if newCategory:
             return newCategory
-        newCategory = Category(name, acheivement)
+        newCategory = Category(name, achievement)
         self.categories.append(newCategory)
         return newCategory
     def checkProjectTitle(self, title):
@@ -132,9 +132,9 @@ class SystemController:
             if company.getName() == name:
                 return company
         return None
-    def checkCategory(self, name, acheivement):
+    def checkCategory(self, name, achievement):
         for category in self.categories:
-            if category.getName() == name and category.getAcheivement() ==  acheivement:
+            if category.getName() == name and category.getachievement() ==  achievement:
                 return category
         return
     def searchByTitle(self, title):
@@ -147,7 +147,8 @@ class SystemController:
                 result["projects"].append(project)
         for project in result["projects"]:
             result["organizations"] += project.getOrganizations()
-            result["companies"].append(project.getCompany())
+            if project.getCompany() != None:
+                result["companies"].append(project.getCompany())
             result["categories"] +=  project.getCategories()
         return result
     def searchByLocation(self, location):
@@ -213,20 +214,20 @@ class SystemController:
                         if category not in result["categories"]:
                             result["categories"].append(category)
         return result
-    def searchByCategory(self, name, acheivement):
+    def searchByCategory(self, name, achievement):
         result = {"projects" : [], 
                   "organizations" : [], 
                   "companies" : [],
                   "categories" : []}
         search_category = None
         for category in self.categories:
-            if category.getName() == name and category.getAcheivement() == acheivement:
+            if category.getName() == name and category.getAchievement() == achievement:
                 search_category = category
                 break
         if search_category:
             result["categories"].append(search_category)
             for project in self.projects:
-                if project.checkCategory(name, acheivement):
+                if project.checkCategory(name, achievement):
                     result["projects"].append(project)
                     for organization in project.getOrganizations():
                         if organization not in result["organizations"]:
@@ -304,12 +305,11 @@ class SystemController:
                     print("No exist category.")        
     def userInput(self):
         print("I - Insert new project | S - Search by Project, Location, Organization, Company, or Category | X - Quit the program", sep = "\n")
-        print( "1 - Display all projects, organizations, comapanies", "2 - Display all projects", "3 - Display all organizations", "4 - Display all companies", "5 - Display all categories", sep = "\n")
+        print( "1 - Display all projects, organizations, comapanies, and categories", "2 - Display all projects", "3 - Display all organizations", "4 - Display all companies", "5 - Display all categories", sep = "\n")
         user_input = input("Please enter the service you want: ")
         return user_input
 
 system = SystemController()
-
 p1 = system.createProject('p1', 'l1', 'status1', 'rating1', 'score1', 'date1', 'tool1')
 com1 = system.addCompany('com1')
 o1 = system.addOrganization('o1', 'role1')
@@ -364,7 +364,10 @@ while user != 'X' and user != 'x':
         tool = input("Please enter the rating tool: ")
         newproject = system.createProject(title, location, status, rating, score, date, tool)
         company_name = input("What is the main company of this project?: ")
-        newCompany = system.addCompany(company_name)
+        if company_name != "":
+            newCompany = system.addCompany(company_name)
+        else:
+            newCompany = None
         newproject.setCompany(newCompany)
         user_organization = input("Do you want to add new ORGANIZATION to this project? (Y - yes, N - no): ")
         while user_organization != 'N' and user_organization != 'n':
@@ -380,8 +383,8 @@ while user != 'X' and user != 'x':
         while user_category != 'N' and user_category != 'n':
             if user_category == 'Y' or user_category == 'y':
                 category_name = input("Please enter the CATEGORY name: ")
-                acheivement = input("Please enter the CATEGORY acheivement: ")
-                newCategory = system.addCategory(category_name, acheivement)
+                achievement = input("Please enter the CATEGORY achievement: ")
+                newCategory = system.addCategory(category_name, achievement)
                 newproject.addCategory(newCategory)
             else:
                 print("System does not understand you command. Please enter again.")
@@ -412,8 +415,8 @@ while user != 'X' and user != 'x':
                 system.printSearchResult(result)
             elif search_option == '5':
                 category_name = input("Please enter the category name for searching: ")
-                category_acheivement = input("Please enter the category acheivement for searching: ")                
-                result = system.searchByCategory(category_name, category_acheivement)
+                category_achievement = input("Please enter the category achievement for searching: ")                
+                result = system.searchByCategory(category_name, category_achievement)
                 system.printSearchResult(result)
             else:
                 print("System does not understand you command. Please enter again.")

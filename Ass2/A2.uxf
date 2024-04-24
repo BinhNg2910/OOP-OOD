@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>78</x>
+      <y>114</y>
+      <w>210</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>Project
+--
+title: string
+location: string
+status: string
+rating: string
+score: string
+date: string
+tool: string
+organizations[]: Organization
+company: Company
+categories[]: Category
+--
+__init__(title, location, status, rating, score, date, tool)
+addOrganization(Organization)
+setCompany(Company)
+addCategory(Category)
+getTitle()
+getLocation()
+getStatus()
+getRating()
+getScore()
+getDate()
+getTool()
+getAllAttributes()
+getOrganizations()
+getCompany()
+getCategories()
+checkOrganization(name, role)
+checkCategory(name, achievement)
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>492</x>
+      <y>354</y>
+      <w>168</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Category
+--
+category_name
+achievement
+--
+__init__(name, achievement)
+getName()
+getAchievement()
+getAllAtrributes()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>282</x>
+      <y>126</y>
+      <w>228</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=*
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>498</x>
+      <y>84</y>
+      <w>156</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Organizaiton
+--
+name
+role
+--
+__init__(self, name, role)
+getName()
+getRole()
+getAllAttributes()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>252</x>
+      <y>510</y>
+      <w>186</w>
+      <h>282</h>
+    </coordinates>
+    <panel_attributes>System
+--
+projects[] = Project
+organizations[] = Organization
+companies[] = Company
+categories[] = Category
+--
+__init__()
+createProject(title, location, 
+status, rating, score, date, tool)
+addOrganization(name, role)
+addCompany(name)
+addCategory(name, acheivement)
+checkProjectTitle(title)
+checkOrganization(name, role)
+checkCompany(name)
+checkCategory(name, achievement)
+searchByTitle(title)
+searchByLocation(location)
+searchByOrganization(name, role)
+searchByCompany(name)
+searchByCategory(name, achievement)
+displayAll()
+displayAllProjects()
+displayAllOrganizations()
+displayAllCompanies()
+displayAllCategories()
+printSearchResult(result)
+userInput()
+importInputFile(input_file)
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>498</x>
+      <y>228</y>
+      <w>114</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>Company
+--
+name
+--
+__init__(name)
+getName()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>282</x>
+      <y>192</y>
+      <w>228</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;220.0;10.0;220.0;120.0;360.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>282</x>
+      <y>282</y>
+      <w>222</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=*
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0;100.0;180.0;350.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>138</y>
+      <w>408</w>
+      <h>522</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;850.0;620.0;850.0;620.0;10.0;370.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>258</y>
+      <w>366</w>
+      <h>366</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;590.0;550.0;590.0;550.0;10.0;300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>414</y>
+      <w>324</w>
+      <h>186</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;290.0;480.0;290.0;480.0;10.0;380.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>126</x>
+      <y>396</y>
+      <w>138</w>
+      <h>258</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+&lt; has</panel_attributes>
+    <additional_attributes>210.0;410.0;10.0;410.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

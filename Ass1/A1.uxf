@@ -4,10 +4,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>344</x>
-      <y>128</y>
-      <w>288</w>
-      <h>320</h>
+      <x>328</x>
+      <y>72</y>
+      <w>280</w>
+      <h>384</h>
     </coordinates>
     <panel_attributes>Project
 --
@@ -20,9 +20,12 @@ date: string
 tool: string
 organizations[]: Organization
 company: Company
-categoriesp[]: Category
+categories[]: Category
 --
 __init__(title, location, status, rating, score, date, tool)
+addOrganization(Organization)
+setCompany(Company)
+addCategory(Category)
 getTitle()
 getLocation()
 getStatus()
@@ -33,7 +36,9 @@ getTool()
 getAllAttributes()
 getOrganizations()
 getCompany()
+getCategories()
 checkOrganization(name, role)
+checkCategory(name, achievement)
 
 bg=#dddddd
 </panel_attributes>
@@ -42,19 +47,19 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>896</x>
-      <y>448</y>
-      <w>152</w>
+      <x>880</x>
+      <y>392</y>
+      <w>224</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>Category
 --
 category_name
-acheivement
+achievement
 --
-__init__(name, acheivement, title, location)
+__init__(name, achievement, title, location)
 getName()
-getAcheivement()
+getAchievement()
 getAllAtrributes()
 
 bg=#dddddd
@@ -64,9 +69,9 @@ bg=#dddddd
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>144</y>
-      <w>296</w>
+      <x>600</x>
+      <y>88</y>
+      <w>304</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -74,13 +79,13 @@ m1=1..*
 r1=
 m2=*
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;360.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>904</x>
-      <y>88</y>
+      <x>888</x>
+      <y>32</y>
       <w>208</w>
       <h>112</h>
     </coordinates>
@@ -101,9 +106,9 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>392</x>
-      <y>512</y>
-      <w>256</w>
+      <x>560</x>
+      <y>600</y>
+      <w>248</w>
       <h>328</h>
     </coordinates>
     <panel_attributes>System
@@ -140,8 +145,8 @@ bg=#dddddd
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>904</x>
-      <y>280</y>
+      <x>888</x>
+      <y>224</y>
       <w>152</w>
       <h>72</h>
     </coordinates>
@@ -159,9 +164,9 @@ bg=#dddddd
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>232</y>
-      <w>296</w>
+      <x>600</x>
+      <y>176</y>
+      <w>304</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -169,14 +174,14 @@ m1=1..*
 r1=
 m2=
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;210.0;10.0;210.0;120.0;350.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;220.0;10.0;220.0;120.0;360.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>352</y>
-      <w>288</w>
+      <x>600</x>
+      <y>296</y>
+      <w>296</w>
       <h>168</h>
     </coordinates>
     <panel_attributes>lt=-
@@ -184,6 +189,66 @@ m1=1..*
 r1=
 m2=*
 has &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;90.0;10.0;90.0;180.0;340.0;180.0</additional_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0;100.0;180.0;350.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>104</y>
+      <w>544</w>
+      <h>696</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;850.0;620.0;850.0;620.0;10.0;370.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>264</y>
+      <w>488</w>
+      <h>488</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;590.0;550.0;590.0;550.0;10.0;300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>472</y>
+      <w>432</w>
+      <h>248</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;290.0;480.0;290.0;480.0;10.0;380.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>448</y>
+      <w>184</w>
+      <h>344</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+&lt; has</panel_attributes>
+    <additional_attributes>210.0;410.0;10.0;410.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
