@@ -1,2 +1,4 @@
-num = 123
-print(str(num)[0])
+test = {'bradon' : "Binh",
+        "Jessica" : "Lam"}
+for i in test:
+    print(i)

@@ -1,1 +1,1 @@
-addCompany
+getAllAttributes

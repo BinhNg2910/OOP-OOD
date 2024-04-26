@@ -3,11 +3,11 @@ class Project:
     def __init__(self, title, location, status, rating, score, date, tool) -> None:
         self.title = title
         self.location = location if location else "NULL"
-        self.status = status
-        self.rating = rating
-        self.score = score
-        self.date = date
-        self.tool = tool
+        self.status = status if status else "NULL"
+        self.rating = rating if rating else "NULL"
+        self.score = score if score else "NULL"
+        self.date = date if date else "NULL"
+        self.tool = tool if tool else "NULL"
         self.organizations = []
         self.company = None
         self.categories = []
@@ -128,7 +128,7 @@ class SystemController:
         return newCategory
     # check project's title wheather it already exists or not
     def checkProjectTitle(self, title):
-        if title == None:
+        if title.strip() == "":
             return False
         for project in self.projects:
             if project.getTitle() == title:
@@ -342,12 +342,12 @@ class SystemController:
         print( "1 - Display all projects, organizations, comapanies, and categories", "2 - Display all projects", "3 - Display all organizations", "4 - Display all companies", "5 - Display all categories", sep = "\n")
         user_input = input("Please enter the service you want: ")
         return user_input
-    def userService(self):
+    def userServiceRequirement(self):
         if user == 'I' or user == 'i':
             print("Now you can insert a new project.")
             title = input("Please enter the new project title: ")
             while not self.checkProjectTitle( title):
-                print("Your project tile is already exist.")
+                print("Your project title is already exist or project tile is not valid.")
                 title = input("Please enter the new project title: ")
             location = input("Please enter the new project location: ")
             status = input("Please enter the new project status: ")
@@ -391,30 +391,30 @@ class SystemController:
                     search_title = input("Please enter the project title you want to search: ")
                     result = self.searchByTitle(search_title)
                     self.printSearchResult(result)
-                    self.exportOutputFile('output.txt', result)
+                    self.exportOutputFile('output.txt', result, "project")
                 elif search_option == '2':
                     search_location = input("Please enter the project location you want to search: ")
                     result = self.searchByLocation(search_location)
                     self.printSearchResult(result)
-                    self.exportOutputFile('output.txt', result)
+                    self.exportOutputFile('output.txt', result, "location")
                 elif search_option == '3':
                     print("Please enter the name and role of the organization for searching")
                     organ_name = input("Organization name: ")
                     organ_role = input("Organization role: ")
                     result = self.searchByOrganization(organ_name, organ_role)
                     self.printSearchResult(result)
-                    self.exportOutputFile('output.txt', result)
+                    self.exportOutputFile('output.txt', result, "organization")
                 elif search_option == '4':
                     company_name = input("Please enter the company name for searching: ")
                     result = self.searchByCompany(company_name)
                     self.printSearchResult(result)
-                    self.exportOutputFile('output.txt', result)
+                    self.exportOutputFile('output.txt', result, "company")
                 elif search_option == '5':
                     category_name = input("Please enter the category name for searching: ")
                     category_achievement = input("Please enter the category achievement for searching: ")                
                     result = self.searchByCategory(category_name, category_achievement)
                     self.printSearchResult(result)
-                    self.exportOutputFile('output.txt', result)
+                    self.exportOutputFile('output.txt', result, "category")
                 else:
                     print("System does not understand your command. Please enter again.")
                 print("1 - Search by project title", "2 - Search by location", "3 - Search by organization", "4 - Search by company", "5 - Search by category", "X - Exit the search function", sep = "\n")
@@ -433,35 +433,58 @@ class SystemController:
             print("System does not understand you command. Please enter again.")
         print("- - - - - - - - - -")
 
+    def check_DataType_Input(self, attribute_input, data_type):
+        try:
+            if attribute_input == "project_title":
+                raise DataType_Input_Error("Wrong input data type for score")
+            if attribute_input == "location":
+                raise DataType_Input_Error("Wrong input data type for location")
+            if attribute_input == "score":
+                raise DataType_Input_Error("Wrong input data type for status")
+            if attribute_input == "score":
+                if type(attribute_input) == int:
+                    raise DataType_Input_Error("Wrong input data type for score")
+        except DataType_Input_Error as e:
+            print(f'This {e}')
+        except ValueError as e:
+            print(f'This {e}')            
 
     # import input file to the program (the input file includes information about the project, organization, company, and category)
+    # check the error when importing input file - title cannot be same as exist one, title cannot be empty
     def importInputFile(self, input_file):
-        # try:
         with open(input_file, 'r') as file:
             lines = file.readlines()
-            for line in lines:
-                attributes = line.split(',')
-                project_arr = self.getProjectValues(attributes)
-                organization_arr = self.getOrganizationValues(attributes)
-                company_arr = self.getCompanyValues(attributes)
-                category_arr = self.getCategoryValues(attributes)
-                p = self.createProject(project_arr[0], project_arr[1], project_arr[2], project_arr[3], project_arr[4], project_arr[5], project_arr[6])
-                
-                for i in organization_arr:
-                    organization = self.addOrganization(i[0], i[1])
-                    p.addOrganization(organization)
-                for i in company_arr:
-                    compayny = self.addCompany(i)
-                    p.setCompany(compayny)
-                for i in category_arr:
-                    category = self.addCategory(i[0], i[1])
-                    p.addCategory(category)
-                # print("Ok!!!")
+            for row_number, line in enumerate(lines, 1):
+                try:
+                    if line.strip() == "":
+                        raise Exception("Empty row")
+                    attributes = line.split(',')
+                    project_dict = self.getProjectValues(attributes)
+                    if project_dict["title"].strip() == "":
+                        raise Exception("Project's title is not valid")
+                    elif not self.checkProjectTitle(project_dict["title"]):
+                        raise Exception("Project's title already exists")
+                    organization_arr = self.getOrganizationValues(attributes)
+                    company_arr = self.getCompanyValues(attributes)
+                    category_arr = self.getCategoryValues(attributes)
+                    
+                    p = self.createProject(project_dict["title"], project_dict["location"], project_dict["status"], project_dict["rating"], project_dict["score"], project_dict["date"], project_dict["tool"])
+                    for i in organization_arr:
+                        organization = self.addOrganization(i[0], i[1])
+                        p.addOrganization(organization)
+                    for i in company_arr:
+                        compayny = self.addCompany(i)
+                        p.setCompany(compayny)
+                    for i in category_arr:
+                        category = self.addCategory(i[0], i[1])
+                        p.addCategory(category)
+                except Exception as e:
+                    print(f'At line {row_number}: ERROR when importing project: {e} !!!')
         # except IOError as e:
         #     print(f"An error occureed while accesing the files: {e}")
         # except Exception as e:
         #     print(f"An error accurred: {e}")
-    def exportOutputFile(self, output_file, result):
+    def exportOutputFile(self, output_file, result, searching_attribute):
         if result:
             with open(output_file, 'w') as file:
                 for i in result:
@@ -508,37 +531,108 @@ class SystemController:
         else:
             file.write("Program can not search for related projects, organizations, companies, and categories.")
 
+    # split the line to get the project attributes
     def getProjectValues(self, attributes):
-        # try:
-        array_project = ["title", "location", "status", "rating", "score", "date", "tool"]
-        result = []
+        result = {"title" : "", 
+                  "location" : "", 
+                  "status": "", 
+                  "rating": "", 
+                  "score": "", 
+                  "date": "", 
+                  "tool": ""}
         i = 0
         for attribute in attributes:
-            if array_project[i] in attribute:
-                key, value = attribute.split(':')
-                result.append(value.strip())
-                i = i + 1   
-                if i >= len(array_project):
-                    break
+            try:
+                if "title" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')
+                    result["title"] = value
+                elif "location" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')                   
+                    result["location"] = value
+                elif "status" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')
+                    result["status"] = value
+                elif "rating" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')
+                    result["rating"] = value
+                elif "score" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')
+                    result["score"] = value
+                elif "date" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')
+                    result["date"] = value
+                elif "tool" in attribute:
+                    colon_position = attribute.find(':')
+                    if colon_position == -1:
+                        value = ""
+                    else:
+                        value = attribute[colon_position + 1:].strip()
+                    # key, value = attribute.split(':')
+                    result["tool"] = value
+            except Exception as e:
+                print(f"An error accurred: {e}")
         return result
-        # except
 
     # get organization name and role in a line of input file
     def getOrganizationValues(self, attributes):
         result = []
         for i in range (len(attributes)):
             if "organization_name" in attributes[i]:
-                key1, value1 = attributes[i].split(':')
-                key2, value2 = attributes[i+1].split(':')
-                result.append((value1.strip(), value2.strip()))
+                colon_position = attributes[i].find(':')
+                if colon_position == -1:
+                    value1 = ""
+                else:
+                    value1 = attributes[i][colon_position + 1:].strip()
+                # find the role of organization when we can collect the organization nam already
+                if attributes[i+1]:
+                    colon_position = attributes[i+1].find(':')
+                    if colon_position == -1:
+                        value2 = ""
+                    else:
+                        value2 = attributes[i+1][colon_position + 1:].strip()
+                result.append((value1, value2))
         return result
     # get company name in a line of input file
     def getCompanyValues(self, attributes):
         result = []
         for attribute in attributes:
             if "company_name" in attribute:
-                key, value = attribute.split(':')
-                result.append(value.strip())
+                colon_position = attribute.find(':')
+                if colon_position == -1:
+                    value = ""
+                else:
+                    value = attribute[colon_position + 1:].strip()
+                result.append(value)
         return result
     
     #get category name and achievement in a line of input file
@@ -546,14 +640,26 @@ class SystemController:
         result = []
         for i in range (len(attributes)):
             if "category_name" in attributes[i]:
-                key1, value1 = attributes[i].split(':')
-                key2, value2 = attributes[i+1].split(':')
+                colon_position = attributes[i].find(':')
+                if colon_position == -1:
+                    value1 = ""
+                else:
+                    value1 = attributes[i][colon_position + 1:].strip()
+                # find the role of organization when we can collect the organization nam already
+                i += 1
+                if attributes[i]:
+                    colon_position = attributes[i].find(':')
+                    if colon_position == -1:
+                        value2 = ""
+                    else:
+                        value2 = attributes[i][colon_position + 1:].strip()
+                result.append((value1, value2))
                 result.append((value1.strip(), value2.strip()))       
         return result
 class DataType_Input_Error(Exception):
     "The data type is not appropriate"
 class InputFile_Error(Exception):
-    def __init__(self):
+    def __init__(self, message):
         super().__init__(message)
 class CustomeError(Exception):
     def __init__(self, message = "Error!!!"):
@@ -604,93 +710,5 @@ system.importInputFile('input.txt')
 
 user = system.userInput()
 while user != 'X' and user != 'x':
-    if user == 'I' or user == 'i':
-        print("Now you can insert a new project.")
-        title = input("Please enter the new project title: ")
-        while not system.checkProjectTitle( title):
-            print("Your project tile is already exist.")
-            title = input("Please enter the new project title: ")
-        location = input("Please enter the new project location: ")
-        status = input("Please enter the new project status: ")
-        rating = input("Please enter the new project rating number: ")
-        score = input("Please enter the new project score: ")
-        date = input("Please enter the certified date (dd/mm/yyyy): ")
-        tool = input("Please enter the rating tool: ")
-        newproject = system.createProject(title, location, status, rating, score, date, tool)
-        company_name = input("What is the main company of this project?: ")
-        if company_name != "":
-            newCompany = system.addCompany(company_name)
-        else:
-            newCompany = None
-        newproject.setCompany(newCompany)
-        user_organization = input("Do you want to add new ORGANIZATION to this project? (Y - yes, N - no): ")
-        while user_organization != 'N' and user_organization != 'n':
-            if user_organization == 'Y' or user_organization == 'y':
-                organization_name = input("Please enter the ORGANIZATION name: ")
-                organization_role = input("Please enter the ORGANIZATION role: ")
-                newOrganization = system.addOrganization(organization_name, organization_role)
-                newproject.addOrganization(newOrganization)
-            else:
-                print("System does not understand you command. Please enter again.")
-            user_organization = input("Do you want to add new ORGANIZATION to this project? (Y - yes, N - no): ")
-        user_category = input("Do you want to add new CATEGORY to this project? (Y - yes, N - no): ")
-        while user_category != 'N' and user_category != 'n':
-            if user_category == 'Y' or user_category == 'y':
-                category_name = input("Please enter the CATEGORY name: ")
-                achievement = input("Please enter the CATEGORY achievement: ")
-                newCategory = system.addCategory(category_name, achievement)
-                newproject.addCategory(newCategory)
-            else:
-                print("System does not understand you command. Please enter again.")
-            user_category = input("Do you want to add new CATEGORY to this project? (Y - yes, N - no): ")
-
-    elif user == 'S' or user == 's':
-        print("1 - Search by project title", "2 - Search by location", "3 - Search by organization", "4 - Search by company", "5 - Search by category", "X - Exit the search function", sep = "\n")
-        search_option = input("Please select the search option that you want: ")
-        while search_option != 'X' and search_option != 'x':
-            if search_option == '1':
-                search_title = input("Please enter the project title you want to search: ")
-                result = system.searchByTitle(search_title)
-                system.printSearchResult(result)
-                system.exportOutputFile('output.txt', result)
-            elif search_option == '2':
-                search_location = input("Please enter the project location you want to search: ")
-                result = system.searchByLocation(search_location)
-                system.printSearchResult(result)
-                system.exportOutputFile('output.txt', result)
-            elif search_option == '3':
-                print("Please enter the name and role of the organization for searching")
-                organ_name = input("Organization name: ")
-                organ_role = input("Organization role: ")
-                result = system.searchByOrganization(organ_name, organ_role)
-                system.printSearchResult(result)
-                system.exportOutputFile('output.txt', result)
-            elif search_option == '4':
-                company_name = input("Please enter the company name for searching: ")
-                result = system.searchByCompany(company_name)
-                system.printSearchResult(result)
-                system.exportOutputFile('output.txt', result)
-            elif search_option == '5':
-                category_name = input("Please enter the category name for searching: ")
-                category_achievement = input("Please enter the category achievement for searching: ")                
-                result = system.searchByCategory(category_name, category_achievement)
-                system.printSearchResult(result)
-                system.exportOutputFile('output.txt', result)
-            else:
-                print("System does not understand your command. Please enter again.")
-            print("1 - Search by project title", "2 - Search by location", "3 - Search by organization", "4 - Search by company", "5 - Search by category", "X - Exit the search function", sep = "\n")
-            search_option = input("Please select the search option that you want: ")
-    elif user == "1":
-        system.displayAll()
-    elif user == "2":
-        system.displayAllProjects()
-    elif user == "3":
-        system.displayAllOrganizations()
-    elif user == "4":
-        system.displayAllCompanies()
-    elif user == '5':
-        system.displayAllCategories()
-    else:
-        print("System does not understand you command. Please enter again.")
-    print("- - - - - - - - - -")
+    system.userServiceRequirement()
     user = system.userInput()
