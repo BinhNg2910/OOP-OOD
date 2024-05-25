@@ -83,6 +83,11 @@ class Project:
                 return True
         return False
 
+class Attribute_Element():
+    def __init__(self):
+        pass
+    def getName(self):
+        return self.name
 # organization class, initializtion function, functions to get organization's attributes, 
 # and function to display organization's attributes on user interface and output-file
 class Organization:
@@ -131,6 +136,34 @@ class Category:
         attribute_str = ", ".join(attributes) if attributes else "NULL"
         return attribute_str
 
+# Observer Patter (Python design pattern class)
+class Observer:
+    def update(self, project):
+        pass
+class Project_Logger(Observer):
+    def update(self, project):
+        print(f"New project created: {project.getAllAttributes()}")
+class Project_Statistics(Observer):
+    def __init__(self):
+        self.project_count = 0
+    def update(self, project):
+        self.project_count += 1
+        print(f"Total projects: {self.project_count}")
+
+# class Data_Diagram_Analysis():
+#     def __init__(self):
+#         pass
+#     def drawing(self, data):
+#         pass
+
+class BaseException(Exception):
+    """Base exception class for project exceptions"""
+    pass
+class Date_Error_InputType(BaseException):
+    """Exception raised for date inputs."""
+    def __init__(self, value):
+        super().__init__(f"Date value input: {value}")
+
 # system that manage all function of the program
 class SystemController:
     def __init__(self):
@@ -138,12 +171,24 @@ class SystemController:
         self.organizations = []
         self.companies = []
         self.categories = []
+        self.observers = []
 
     # create a project form project class
     def createProject(self, title, location, status, rating, score, date, tool):
         newProject = Project(title, location, status, rating, score, date, tool)
         self.projects.append(newProject)
+        self.notify_observer(newProject)
         return newProject
+    # function to add observer class
+    def add_observer(self, observer):
+        self.observers.append(observer)
+    def remove_observer(self, observer):
+        self.observers.remove(observer)
+    # notify the the project details and total projects when each project is created and add to system (in import file or when users enter by themselves)
+    def notify_observer(self, project):
+        for observer in self.observers:
+            observer.update(project)
+
     # create a organization and add it to project
     def addOrganization(self, name, role):
         newOrganization = self.checkOrganization(name, role)
@@ -221,7 +266,7 @@ class SystemController:
                 return False
         except ValueError:
             return False
-    def Project_Time_Line(self):
+    def Time_Project_Line(self):
         year_dict = {year: 0 for year in range(2000, 2024 + 1)}
         for project in self.projects:
             proj_year = datetime.strptime(project.getDate(), '%d/%m/%Y').year
@@ -233,9 +278,8 @@ class SystemController:
         ax = plt.xlabel("Year")
         ax = plt.ylabel("Number of Projects")
         plt.tight_layout()
+        plt.savefig("Time_Project_LineChart.png")
         plt.show()
-    # def Location_Rating_Score_Status_PieChart(self):
-    #     fig, ax = subplots(2, 2, 1)
     def Location_Project_Pie(self):
         location_dict = {}
         for project in self.projects:
@@ -254,8 +298,9 @@ class SystemController:
         ax = plt.legend(percentages, loc='upper right', bbox_to_anchor=(1.3, 1), prop={'size': 8})
         ax = plt.title("Location of projects")
         plt.tight_layout()
+        plt.savefig("Location_Project_PieChart.png")
         plt.show()
-    def Rating_Pie(self):
+    def Rating_Project_Pie(self):
         rating_dict = {"0-3": 0, "3-6": 0, "6-8": 0, "8-10": 0}
         for project in self.projects:
             project_rating = float(project.getRating())
@@ -278,9 +323,10 @@ class SystemController:
         plt.legend(percentages, loc='upper right', bbox_to_anchor=(1.3, 1), prop={'size': 8})
         plt.title("Rating group of projects")
         plt.tight_layout()
+        plt.savefig("Rating_Project_PieChart.png")
         plt.show()
         
-    def Score_Pie(self):
+    def Score_Project_Pie(self):
         score_dict = {"0-20": 0, "21-40": 0, "41-60": 0, "61-80": 0, "81-100": 0}
         for project in self.projects:
             project_score = float(project.getScore())
@@ -303,8 +349,9 @@ class SystemController:
         plt.legend(percentages, loc='upper right', prop={'size': 8})
         plt.title("Score group of projects")
         plt.tight_layout()
+        plt.savefig("Score_Project_PieChart.png")
         plt.show()
-    def Status_Pie(self):
+    def Status_Project_Pie(self):
         status_dict = {"Prepare": 0, "Process": 0, "Done": 0}
         for project in self.projects:
             project_status = project.getStatus()
@@ -324,8 +371,9 @@ class SystemController:
         plt.legend(percentages, loc='upper right', prop={'size': 8})
         plt.title("Status of projects")
         plt.tight_layout()
+        plt.savefig("Status_Project_PieChart.png")
         plt.show()
-    def Company_Barh(self):
+    def Company_Project_Barh(self):
         com_dict = {}
         for project in self.projects:
             project_com = project.getCompany().getName()
@@ -342,8 +390,9 @@ class SystemController:
         ax = plt.ylabel('Company')
         plt.gca().invert_yaxis()
         plt.tight_layout()
+        plt.savefig("Campany_Project_BarhChart.png")
         plt.show()
-    def Organization_Bar(self):
+    def Organization_Project_Bar(self):
         organization_dict = {}
         for project in self.projects:
             organization_list = project.getOrganizations()
@@ -362,6 +411,49 @@ class SystemController:
         ax = plt.ylabel('Organization')
         plt.xticks(rotation=45)
         plt.tight_layout()
+        plt.savefig("Organization_Project_BarChart.png")
+        plt.show()
+    def Organization_Location_Line(self):
+        location_dict = {}
+        for project in self.projects:
+            location = project.getLocation()
+            organization_list = project.getOrganizations()
+            if location not in location_dict:
+                location_dict[location] = []
+            for organization in organization_list:
+                if organization not in location_dict[location]:
+                    location_dict[location].append(organization.getName())
+        
+        location_dict = {key : len(value) for key, value in location_dict.items()}
+        locations = location_dict.keys()
+        organization_amount = location_dict.values()
+        fig, ax = plt.subplots()
+        ax = plt.plot(locations, organization_amount, '--', color="red", linewidth=2, marker="o")
+        ax = plt.xlabel("Year")
+        ax = plt.ylabel("Number of organization")
+        plt.tight_layout()
+        plt.savefig("Location_Organization_LineChart.png")
+        plt.show()
+    def Category_Location_Line(self):
+        location_dict = {}
+        for project in self.projects:
+            location = project.getLocation()
+            category_list = project.getCategories()
+            if location not in location_dict:
+                location_dict[location] = []
+            for category in category_list:
+                if category not in location_dict[location]:
+                    location_dict[location].append(category.getName())
+        
+        location_dict = {key : len(value) for key, value in location_dict.items()}
+        locations = location_dict.keys()
+        category_amount = location_dict.values()
+        fig, ax = plt.subplots()
+        ax = plt.plot(locations, category_amount, '-.', color="green", linewidth=5)
+        ax = plt.xlabel("Location")
+        ax = plt.ylabel("Number of category")
+        plt.tight_layout()
+        plt.savefig("Location_Category_LineChart.png")
         plt.show()
     # when using searching function all projects, all organizations, all companies and all categories that relates the information user want to search by will be concatenated together to a dictionay variable
     # search all relevant information by project's title
@@ -681,15 +773,12 @@ class SystemController:
     
     # get the user's requirement functions
     def userInput(self):
-        print("I - Insert new project | S - Search by Project, Location, Organization, Company, or Category | X - Quit the program", sep = "\n")
-        print(  "1 - Display all projects, organizations, comapanies, and categories", "2 - Display all projects", "3 - Display all organizations", 
-                "4 - Display all companies", "5 - Display all categories", "6 to 10 - Making statistic diagram","6 Time (year) with amount of projects (Line chart)", "7 - Location with number of projects (Pie chart)", 
-                "8 - Rating of projects (Pie chart)", "9 - Score of projects (Pie chart)", "10 - Status of projects (Pie chart)", 
-                "11 - Project amount of company (Barh chart)", "12 - Project amount of organization (Bar chart)", sep = "\n")
-        user_input = input("Please enter the service you want: ")
+        print("I - Insert new project | S - Search by Project, Location, Organization, Company, or Category | D - Display Projects, Organizations, Companies, and Categories | X - Quit the program", sep = "\n")
+        print(  "1 to 9 - Making statistic diagram","1 Time (year) with amount of projects (Line chart)", "2 - Location with number of projects (Pie chart)", "3 - Rating of projects (Pie chart)", "4 - Score of projects (Pie chart)", "5 - Status of projects (Pie chart)", "6 - Project amount of company (Barh chart)", "7 - Project amount of organization (Bar chart)", "8 - Organization amount of location (Barh chart)", "9 - Category amount of location (Bar chart)", sep = "\n")
+        user_input = input("Please enter the service you want: ").upper()
         return user_input
-    def userServiceRequirement(self):
-        if user == 'I' or user == 'i':
+    def systemOperating(self, user):
+        if user == 'I':
             print("Now you can insert a new project.")
             title = input("Please enter the new project title: ")
             while not self.checkProjectTitle( title):
@@ -747,7 +836,7 @@ class SystemController:
                     print("System does not understand your command. Please enter again.")
                 user_category = input("Do you want to add new CATEGORY to this project? (Y - yes, N - no): ")
 
-        elif user == 'S' or user == 's':
+        elif user == 'S':
             print(  "1 - Search by project title", "2 - Search by location", "3 - Search by organization", 
                     "4 - Search by company", "5 - Search by category", 
                     "X - Exit the search function", sep = "\n")
@@ -784,33 +873,40 @@ class SystemController:
                 else:
                     output_str = "System does not understand your command. Please enter again."
                     print("System does not understand your command. Please enter again.")
+                # write the output to result file 
                 self.exportOutputFile('output.txt', output_str)
                 print("1 - Search by project title", "2 - Search by location", "3 - Search by organization", "4 - Search by company", "5 - Search by category", "X - Exit the search function", sep = "\n")
                 search_option = input("Please select the search option that you want: ")
-        elif user == "1":
-            self.displayAll()
-        elif user == "2":
-            self.displayAllProjects()
-        elif user == "3":
-            self.displayAllOrganizations()
-        elif user == "4":
-            self.displayAllCompanies()
-        elif user == '5':
-            self.displayAllCategories()
-        elif user == '6':
-            self.Project_Time_Line()
-        elif user == '7':
+        elif user == "D":
+            print("1 - Display all projects, organizations, comapanies, and categories", "2 - Display all projects", "3 - Display all organizations", "4 - Display all companies", "5 - Display all categories", sep="\n")
+            if user == "1":
+                self.displayAll()
+            elif user == "2":
+                self.displayAllProjects()
+            elif user == "3":
+                self.displayAllOrganizations()
+            elif user == "4":
+                self.displayAllCompanies()
+            elif user == '5':
+                self.displayAllCategories()
+        elif user == '1':
+            self.Time_Project_Line()
+        elif user == '2':
             self.Location_Project_Pie()
+        elif user == '3':
+            self.Rating_Project_Pie()
+        elif user == '4':
+            self.Score_Project_Pie()
+        elif user == '5':
+            self.Status_Project_Pie()
+        elif user == '6':
+            self.Company_Project_Barh()
+        elif user == '7':
+            self.Organization_Project_Bar()
         elif user == '8':
-            self.Rating_Pie()
+            self.Organization_Location_Line()
         elif user == '9':
-            self.Score_Pie()
-        elif user == '10':
-            self.Status_Pie()
-        elif user == '11':
-            self.Company_Barh()
-        elif user == '12':
-            self.Organization_Bar()
+            self.Category_Location_Line()
         else:
             print("System does not understand your command. Please enter again.")
         print("- - - - - - - - - -")         
@@ -820,42 +916,25 @@ class SystemController:
     # the checking error will notify that which row of input-file has the error 
     def importInputFile(self, input_file):
         with open(input_file) as file:
-            # data = json.load(file)
-            lines = file.readlines()
-            for row_number, line in enumerate(lines, 1):
-                try:
-                    if line.strip() == "":
-                        raise Exception("Empty row")
-                    attributes = line.split(',')
-                    project_dict = self.getProjectValues(attributes)
-                    if project_dict["title"] == "":
-                        raise Exception("Project's title is not valid")
-                    elif not self.checkProjectTitle(project_dict["title"]):
-                        raise Exception("Project's title already exists")
-                    if not self.checkInsertStatus(project_dict["status"]):
-                        raise Exception("Project's status is not valid")
-                    if not self.checkInsertRating(project_dict["rating"]):
-                        raise Exception("Project's rating is out of range!")
-                    if not self.checkInsertScore(project_dict["score"]):
-                        raise Exception("Project's score is out of range")
-                    if not self.checkInsertDate(project_dict["date"]):
-                        raise Exception("Project's date is not valid")
-                    organization_arr = self.getOrganizationValues(attributes)
-                    company_arr = self.getCompanyValues(attributes)
-                    category_arr = self.getCategoryValues(attributes)
-                    p = self.createProject(project_dict["title"], project_dict["location"], project_dict["status"], project_dict["rating"], project_dict["score"], project_dict["date"], project_dict["tool"])
-                    for i in organization_arr:
-                        organization = self.addOrganization(i[0], i[1])
-                        p.addOrganization(organization)
-                    for i in company_arr:
-                        company = self.addCompany(i)
-                        p.setCompany(company)
-                    for i in category_arr:
-                        category = self.addCategory(i[0], i[1])
-                        p.addCategory(category)
-                except Exception as e:
-                    print(f'At line {row_number}: ERROR when importing project: {e} !!!')
-        # input_file.close()
+            datas = json.load(file)
+            for data in datas:
+                title = data['title']
+                location = data['location']
+                status = data['status']
+                rating = data['rating']
+                score = data['score']
+                date = data['date']
+                tool = data['tool']
+                project = self.createProject(title, location, status, rating, score, date, tool)
+                company = self.addCompany(data['company_name'])
+                project.setCompany(company)
+                for organ in data['organizations']:
+                    organization = self.addOrganization(organ['organization_name'], organ['organization_role'])
+                    project.addOrganization(organization)
+                for cate in data['categories']:
+                    category = self.addCategory(cate['category_name'], cate['category_achievement'])
+                    project.addCategory(category)
+                
 
     # this function is used to write the result (with string type) that gain from searching functions to an output-file
     def exportOutputFile(self, output_file, output_str):
@@ -983,12 +1062,21 @@ class SystemController:
                         value2 = attributes[i][colon_position + 1:]
                 result.append((value1.strip(), value2.strip()))       
         return result
-    def systemOperating(self):
-        self.userServiceRequirement()
+    # def systemOperating(self):
+    #     self.userServiceRequirement()
 
-system = SystemController()
-system.importInputFile('input.json')
-user = system.userInput()
-while user != 'X' and user != 'x':
-    system.systemOperating()
+def main():
+    system = SystemController()
+    logger = Project_Logger()
+    statistics = Project_Statistics()
+    system.add_observer(logger)
+    system.add_observer(statistics)
+
+    system.importInputFile('input.json')
     user = system.userInput()
+    while user != 'X' and user != 'x':
+        system.systemOperating(user)
+        user = system.userInput()
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>4</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>188</x>
+      <y>136</y>
+      <w>144</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Project
+--
+-title: string
+-location: string
+-status: string
+-rating: string
+-score: string
+-date: string
+-tool: string
+-organizations[]: Organization
+-company: Company
+-categories[]: Category
+--
++__init__(title, location, status, rating, score, date, tool)
++addOrganization(Organization)
++setCompany(Company)
++addCategory(Category)
++getTitle()
++getLocation()
++getStatus()
++getRating()
++getScore()
++getDate()
++getTool()
++getAllAttributes()
++getAllAttributes_OutputFile()
++getOrganizations()
++getCompany()
++getCategories()
++checkOrganization(name, role)
++checkCompany(name)
++checkCategory(name, achievement)
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>464</x>
+      <y>296</y>
+      <w>112</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Category
+--
+-category_name
+-achievement
+--
++__init__(name, achievement)
++getName()
++getAchievement()
++getAllAtrributes()
++getAllAttributes_OutputFile()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>144</y>
+      <w>148</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=*
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>116</y>
+      <w>100</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Organizaiton
+--
+-name
+-role
+--
++__init__(self, name, role)
++getName()
++getRole()
++getAllAttributes()
++getAllAttributes_OutputFile()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>304</x>
+      <y>400</y>
+      <w>140</w>
+      <h>272</h>
+    </coordinates>
+    <panel_attributes>System
+--
+-projects[] = Project
+-organizations[] = Organization
+-companies[] = Company
+-categories[] = Category
+--
++__init__()
++createProject(title, location, status, 
+rating, score, date, tool)
++addOrganization(name, role)
++addCompany(name)
++addCategory(name, acheivement)
++checkProjectTitle(title)
++checkOrganization(name, role)
++checkCompany(name)
++checkCategory(name, achievement)
++searchByTitle(title)
++searchByTitle_OutputFile(title)
++searchByLocation(location)
++searchByLocation_OutputFile(location)
++searchByOrganization(name, role)
++searchByOrganization_OutputFile(name, role)
++searchByCompany(name)
++searchByCompany_OutputFile(name)
++searchByCategory(name, achievement)
++searchByCategory_OutputFile(name, achievement)
++displayAll()
++displayAllProjects()
++displayAllOrganizations()
++displayAllCompanies()
++displayAllCategories()
++printSearchResult(result)
++userInput()
++userServiceRequirement()
++importInputFile(input_file)
++exportOutputFile(output_file, output_str)
++getProjectValues(attributes)
++getOrganizationValues(attributes)
++getCompanyValues(attributes)
++getCategoryValues(attributes)
++systemOperating()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>212</y>
+      <w>68</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>Company
+--
+-name
+--
++__init__(name)
++getName()
++getName_OutputFile()
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>188</y>
+      <w>148</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0;210.0;120.0;350.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>248</y>
+      <w>144</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+r1=
+m2=*
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0;90.0;180.0;340.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>152</y>
+      <w>256</w>
+      <h>348</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;850.0;580.0;850.0;580.0;10.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>232</y>
+      <w>228</w>
+      <h>244</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;590.0;510.0;590.0;510.0;10.0;240.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>336</y>
+      <w>200</w>
+      <h>124</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+has ^</panel_attributes>
+    <additional_attributes>10.0;290.0;440.0;290.0;440.0;10.0;340.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>332</y>
+      <w>92</w>
+      <h>164</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=
+r1=
+m2=*
+&lt; has</panel_attributes>
+    <additional_attributes>210.0;390.0;10.0;390.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>352</x>
+      <y>724</y>
+      <w>52</w>
+      <h>16</h>
+    </coordinates>
+    <panel_attributes>Exception
+
+bg=#dddddd
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>372</x>
+      <y>668</y>
+      <w>36</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+handle v</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+</diagram>
